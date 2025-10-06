@@ -67,7 +67,7 @@ export default function TimeOffLandingPage() {
 
   // For preview you can leave this as a placeholder.
   const WEB_APP_URL =
-    "https://script.google.com/macros/s/AKfycbyBZC675zoetu5Bs4B6wNf3k_xGci2h6HLp2ULy1dtzM2FTrXcXxTtufyG9xGJg0uJm/exec";
+    "https://script.google.com/macros/s/AKfycbzXHTQlVS8tqCadMsjHfrobNhd9k8A7GNyBlw6V7kNi5z4PVRXVSUsblAczhMQq1Zl1/exec";
 
   async function onSubmit(data: FormData) {
     const fd = new FormData();
@@ -343,4 +343,5 @@ export default function TimeOffLandingPage() {
     </div>
   );
 }
+
 
