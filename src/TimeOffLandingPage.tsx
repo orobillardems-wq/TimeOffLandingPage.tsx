@@ -1,5 +1,33 @@
 import React, { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { useEffect } from "react";
+
+function useEmbedAutoResize(defaultId?: string) {
+  useEffect(() => {
+    // Determine which iframe we're in (from ?frameId=... or fallback)
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("frameId") || defaultId || "timeoff";
+
+    const send = () => {
+      const height = document.documentElement.scrollHeight || document.body.scrollHeight || 1000;
+      window.parent?.postMessage({ type: "ems-resize", id, height }, "*");
+    };
+
+    // Initial + on changes
+    send();
+    const ro = new ResizeObserver(send);
+    ro.observe(document.body);
+    window.addEventListener("load", send);
+    window.addEventListener("resize", send);
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("load", send);
+      window.removeEventListener("resize", send);
+    };
+  }, [defaultId]);
+}
+
 
 type Dept =
   | "Administrative Assistant"
@@ -343,6 +371,7 @@ export default function TimeOffLandingPage() {
     </div>
   );
 }
+
 
 
 
