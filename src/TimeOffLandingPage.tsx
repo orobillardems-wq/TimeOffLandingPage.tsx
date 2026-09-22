@@ -22,7 +22,6 @@ type LeaveType =
   | "Vacation"
   | "Sick"
   | "Personal"
-  | "Unpaid"
   | "";
 
 type FormData = {
