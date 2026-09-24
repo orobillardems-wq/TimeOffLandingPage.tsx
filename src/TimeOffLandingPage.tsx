@@ -564,9 +564,7 @@ export default function TimeOffLandingPage() {
                     Personal
                   </option>
 
-                  <option value="Unpaid">
-                    Unpaid
-                  </option>
+
                 </select>
               </div>
             </div>
