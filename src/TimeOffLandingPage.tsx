@@ -484,49 +484,52 @@ export default function TimeOffLandingPage() {
                     }
                   )}
                 >
-                  <option value="">
-                    Choose department
-                  </option>
+                 <option
+  value=""
+  disabled
+>
+  Choose department
+</option>
 
-                  <option value="Administrative Assistant">
-                    Administrative Assistant
-                  </option>
+<option value="Administrative Assistant">
+  Administrative Assistant
+</option>
 
-                  <option value="Auditor">
-                    Auditor
-                  </option>
+<option value="Auditor">
+  Auditor
+</option>
 
-                  <option value="Crew Chief">
-                    Crew Chief
-                  </option>
+<option value="Crew Chief">
+  Crew Chief
+</option>
 
-                  <option value="Crew Tech">
-                    Crew Tech
-                  </option>
+<option value="Crew Tech">
+  Crew Tech
+</option>
 
-                  <option value="Field Staff Manager">
-                    Field Staff Manager
-                  </option>
+<option value="Executive Leadership">
+  Executive Leadership
+</option>
 
-                  <option value="Project Coordinator">
-                    Project Coordinator
-                  </option>
+<option value="Field Staff Manager">
+  Field Staff Manager
+</option>
 
-                  <option value="Executive Leadership">
-                    Executive Leadership
-                  </option>
+<option value="Operations Manager">
+  Operations Manager
+</option>
 
-                  <option value="Operations Manager">
-                    Operations Manager
-                  </option>
+<option value="Project Coordinator">
+  Project Coordinator
+</option>
 
-                  <option value="Service Manager">
-                    Service Manager
-                  </option>
+<option value="Service Manager">
+  Service Manager
+</option>
 
-                  <option value="Warehouse Assistant">
-                    Warehouse Assistant
-                  </option>
+<option value="Warehouse Assistant">
+  Warehouse Assistant
+</option>
                 </select>
               </div>
 
