@@ -3,26 +3,32 @@ import React, {
   useMemo
 } from "react";
 
-import { useForm } from
-  "react-hook-form";
+import {
+  useForm
+} from "react-hook-form";
+
 
 type Dept =
   | "Administrative Assistant"
   | "Auditor"
   | "Crew Chief"
   | "Crew Tech"
-  | "Inventory Coordinator"
-  | "Marketing Coordinator"
-  | "Office Staff"
+  | "Field Staff Manager"
+  | "Project Coordinator"
+  | "Executive Leadership"
   | "Operations Manager"
   | "Service Manager"
+  | "Warehouse Assistant"
   | "";
+
 
 type LeaveType =
   | "Vacation"
   | "Sick"
   | "Personal"
+  | "Unpaid"
   | "";
+
 
 type FormData = {
   employeeName: string;
@@ -37,14 +43,17 @@ type FormData = {
   attachment?: FileList;
 };
 
+
 export default function TimeOffLandingPage() {
-  const defaultDate = useMemo(
-    () =>
-      new Date()
-        .toISOString()
-        .split("T")[0],
-    []
-  );
+  const defaultDate =
+    useMemo(
+      () =>
+        new Date()
+          .toISOString()
+          .split("T")[0],
+      []
+    );
+
 
   const {
     register,
@@ -72,8 +81,15 @@ export default function TimeOffLandingPage() {
     mode: "onBlur",
   });
 
-  const all = watch();
 
+  const all =
+    watch();
+
+  const isPrivate =
+    watch("private");
+
+
+  /***** SAVE DRAFT *****/
   useEffect(() => {
     try {
       const {
@@ -88,6 +104,8 @@ export default function TimeOffLandingPage() {
     } catch {}
   }, [all]);
 
+
+  /***** RESTORE DRAFT *****/
   useEffect(() => {
     try {
       const raw =
@@ -103,22 +121,17 @@ export default function TimeOffLandingPage() {
     } catch {}
   }, [reset]);
 
-  /*
-    IMPORTANT:
-    Replace the text below with your ACTUAL
-    deployed Time-Off Apps Script /exec URL.
 
-    Do NOT use the placeholder URL from your
-    old source file.
-  */
   const WEB_APP_URL =
     "https://script.google.com/macros/s/AKfycbyIldLupEOVjMhtKNQe4T4tXYXB9HklVnVw-Rnil3U8LEbJe5gZfg8TWRO8yNXlK60T/exec";
+
 
   async function onSubmit(
     data: FormData
   ) {
     const fd =
       new FormData();
+
 
     fd.append(
       "employeeName",
@@ -155,7 +168,6 @@ export default function TimeOffLandingPage() {
       data.reasonDetails || ""
     );
 
-    // NEW
     fd.append(
       "private",
       String(!!data.private)
@@ -165,6 +177,7 @@ export default function TimeOffLandingPage() {
       "supervisorName",
       data.supervisorName || ""
     );
+
 
     if (
       data.attachment?.length
@@ -176,6 +189,7 @@ export default function TimeOffLandingPage() {
       );
     }
 
+
     await fetch(
       WEB_APP_URL,
       {
@@ -185,9 +199,11 @@ export default function TimeOffLandingPage() {
       }
     );
 
+
     alert(
-      "Time-off request submitted!"
+      "Future time-off request submitted!"
     );
+
 
     try {
       localStorage.removeItem(
@@ -195,16 +211,22 @@ export default function TimeOffLandingPage() {
       );
     } catch {}
 
+
     reset({
       employeeName: "",
       department: "",
       phone: "",
-      startDate: new Date()
-        .toISOString()
-        .split("T")[0],
-      endDate: new Date()
-        .toISOString()
-        .split("T")[0],
+
+      startDate:
+        new Date()
+          .toISOString()
+          .split("T")[0],
+
+      endDate:
+        new Date()
+          .toISOString()
+          .split("T")[0],
+
       leaveType: "",
       reasonDetails: "",
       private: false,
@@ -213,42 +235,54 @@ export default function TimeOffLandingPage() {
     });
   }
 
-  const isPrivate =
-    watch("private");
 
   const row2 = {
     display: "grid",
     gap: 8,
+
     gridTemplateColumns:
       "repeat(2, minmax(0, 1fr))",
   } as const;
+
 
   const full = {
     display: "grid",
     gap: 8
   } as const;
 
+
   const label = {
     fontSize: 12,
     color: "#334155"
   } as const;
 
+
   const input = {
-    padding: "10px 12px",
+    padding:
+      "10px 12px",
+
     borderRadius: 10,
+
     border:
       "1px solid #e5e7eb",
+
     width: "100%",
-    boxSizing: "border-box",
+
+    boxSizing:
+      "border-box",
   } as const;
+
 
   const section = {
     background: "white",
+
     border:
       "1px solid #e5e7eb",
+
     borderRadius: 16,
     padding: 16,
   } as const;
+
 
   return (
     <div
@@ -261,10 +295,15 @@ export default function TimeOffLandingPage() {
         style={{
           position: "sticky",
           top: 0,
+
           background: "white",
+
           borderBottom:
             "1px solid #e5e7eb",
-          padding: "10px 16px",
+
+          padding:
+            "10px 16px",
+
           zIndex: 10,
         }}
       >
@@ -272,8 +311,10 @@ export default function TimeOffLandingPage() {
           style={{
             maxWidth: 960,
             margin: "0 auto",
+
             display: "flex",
             alignItems: "center",
+
             justifyContent:
               "space-between",
           }}
@@ -288,6 +329,7 @@ export default function TimeOffLandingPage() {
             <img
               src="/RealLogo.png"
               alt="EMS Logo"
+
               style={{
                 height: 60,
                 objectFit: "contain",
@@ -299,12 +341,13 @@ export default function TimeOffLandingPage() {
                 fontWeight: 600
               }}
             >
-              Time-Off Requests
+              Future Time-Off Request
             </div>
           </div>
 
           <a
             href="#policy"
+
             style={{
               fontSize: 14,
               color: "#334155"
@@ -315,13 +358,18 @@ export default function TimeOffLandingPage() {
         </div>
       </header>
 
+
       <main
         style={{
           maxWidth: 960,
           margin: "0 auto",
-          padding: "24px 16px",
+
+          padding:
+            "24px 16px",
+
           display: "grid",
           gap: 16,
+
           gridTemplateColumns:
             "2fr 1fr",
         }}
@@ -334,7 +382,7 @@ export default function TimeOffLandingPage() {
               marginBottom: 4,
             }}
           >
-            Submit a Time-Off Request
+            Future Time-Off Request
           </h2>
 
           <p
@@ -345,14 +393,16 @@ export default function TimeOffLandingPage() {
             }}
           >
             Complete the form below.
-            The appropriate team will be
-            notified immediately.
+            HR and the appropriate team
+            will be notified.
           </p>
+
 
           <form
             onSubmit={
               handleSubmit(onSubmit)
             }
+
             style={{
               display: "grid",
               gap: 12
@@ -367,6 +417,7 @@ export default function TimeOffLandingPage() {
                 <input
                   style={input}
                   placeholder="Jane Doe"
+
                   {...register(
                     "employeeName",
                     {
@@ -386,6 +437,7 @@ export default function TimeOffLandingPage() {
                 )}
               </div>
 
+
               <div>
                 <label style={label}>
                   Best contact number
@@ -394,6 +446,7 @@ export default function TimeOffLandingPage() {
                 <input
                   style={input}
                   placeholder="(555) 555-5555"
+
                   {...register(
                     "phone",
                     {
@@ -414,6 +467,7 @@ export default function TimeOffLandingPage() {
               </div>
             </div>
 
+
             <div style={row2}>
               <div>
                 <label style={label}>
@@ -422,6 +476,7 @@ export default function TimeOffLandingPage() {
 
                 <select
                   style={input}
+
                   {...register(
                     "department",
                     {
@@ -449,16 +504,16 @@ export default function TimeOffLandingPage() {
                     Crew Tech
                   </option>
 
-                  <option value="Inventory Coordinator">
-                    Inventory Coordinator
+                  <option value="Field Staff Manager">
+                    Field Staff Manager
                   </option>
 
-                  <option value="Marketing Coordinator">
-                    Marketing Coordinator
+                  <option value="Project Coordinator">
+                    Project Coordinator
                   </option>
 
-                  <option value="Office Staff">
-                    Office Staff
+                  <option value="Executive Leadership">
+                    Executive Leadership
                   </option>
 
                   <option value="Operations Manager">
@@ -468,8 +523,13 @@ export default function TimeOffLandingPage() {
                   <option value="Service Manager">
                     Service Manager
                   </option>
+
+                  <option value="Warehouse Assistant">
+                    Warehouse Assistant
+                  </option>
                 </select>
               </div>
+
 
               <div>
                 <label style={label}>
@@ -478,6 +538,7 @@ export default function TimeOffLandingPage() {
 
                 <select
                   style={input}
+
                   {...register(
                     "leaveType",
                     {
@@ -508,6 +569,7 @@ export default function TimeOffLandingPage() {
               </div>
             </div>
 
+
             <div style={row2}>
               <div>
                 <label style={label}>
@@ -517,6 +579,7 @@ export default function TimeOffLandingPage() {
                 <input
                   type="date"
                   style={input}
+
                   {...register(
                     "startDate",
                     {
@@ -526,6 +589,7 @@ export default function TimeOffLandingPage() {
                 />
               </div>
 
+
               <div>
                 <label style={label}>
                   End date
@@ -534,6 +598,7 @@ export default function TimeOffLandingPage() {
                 <input
                   type="date"
                   style={input}
+
                   {...register(
                     "endDate",
                     {
@@ -544,6 +609,7 @@ export default function TimeOffLandingPage() {
               </div>
             </div>
 
+
             <div style={full}>
               <label style={label}>
                 Reason / notes
@@ -552,10 +618,15 @@ export default function TimeOffLandingPage() {
               <textarea
                 style={{
                   ...input,
+
                   height: 120,
-                  resize: "vertical",
+
+                  resize:
+                    "vertical",
                 }}
+
                 placeholder="Short explanation…"
+
                 {...register(
                   "reasonDetails",
                   {
@@ -565,30 +636,43 @@ export default function TimeOffLandingPage() {
               />
             </div>
 
-            {/* PRIVATE */}
+
             <div
               style={{
                 padding: 12,
                 borderRadius: 12,
-                border: isPrivate
-                  ? "1px solid #f59e0b"
-                  : "1px solid #e5e7eb",
-                background: isPrivate
-                  ? "#fff7ed"
-                  : "#ffffff",
+
+                border:
+                  isPrivate
+                    ? "1px solid #f59e0b"
+                    : "1px solid #e5e7eb",
+
+                background:
+                  isPrivate
+                    ? "#fff7ed"
+                    : "#ffffff",
               }}
             >
               <label
                 style={{
                   display: "flex",
-                  alignItems: "flex-start",
+
+                  alignItems:
+                    "flex-start",
+
                   gap: 8,
-                  cursor: "pointer",
+
+                  cursor:
+                    "pointer",
                 }}
               >
                 <input
                   type="checkbox"
-                  {...register("private")}
+
+                  {...register(
+                    "private"
+                  )}
+
                   style={{
                     marginTop: 3
                   }}
@@ -614,6 +698,7 @@ export default function TimeOffLandingPage() {
               </label>
             </div>
 
+
             <div style={row2}>
               <div>
                 <label style={label}>
@@ -622,12 +707,15 @@ export default function TimeOffLandingPage() {
 
                 <input
                   style={input}
+
                   placeholder="e.g., Alex Rivera"
+
                   {...register(
                     "supervisorName"
                   )}
                 />
               </div>
+
 
               <div>
                 <label style={label}>
@@ -637,6 +725,7 @@ export default function TimeOffLandingPage() {
                 <input
                   type="file"
                   style={input}
+
                   {...register(
                     "attachment"
                   )}
@@ -644,16 +733,26 @@ export default function TimeOffLandingPage() {
               </div>
             </div>
 
+
             <button
               type="submit"
-              disabled={isSubmitting}
+
+              disabled={
+                isSubmitting
+              }
+
               style={{
                 padding:
                   "10px 16px",
+
                 borderRadius: 12,
                 border: "none",
-                background: "#0f172a",
+
+                background:
+                  "#0f172a",
+
                 color: "white",
+
                 fontWeight: 600,
               }}
             >
@@ -663,6 +762,7 @@ export default function TimeOffLandingPage() {
             </button>
           </form>
         </section>
+
 
         <aside
           id="policy"
@@ -690,8 +790,8 @@ export default function TimeOffLandingPage() {
             </li>
 
             <li>
-              The appropriate team is
-              notified.
+              HR and the appropriate
+              department are notified.
             </li>
 
             <li>
@@ -699,6 +799,7 @@ export default function TimeOffLandingPage() {
               the reason/description.
             </li>
           </ol>
+
 
           <div
             style={{
@@ -733,6 +834,7 @@ export default function TimeOffLandingPage() {
           </div>
         </aside>
       </main>
+
 
       <footer
         style={{
